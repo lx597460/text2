@@ -1,28 +1,28 @@
-package states;
+package states;   包;
 
-import backend.WeekData;
-import backend.Highscore;
-import backend.Song;
+import   进口   进口backend.WeekData; backend.WeekData;
+import   进口进口backend.Highscore; backend.Highscore;
+import   进口   进口backend.Song; backend.Song;
 
-import objects.HealthIcon;
-import objects.MusicPlayer;
+import   进口进口objects.HealthIcon; objects.HealthIcon;
+import   进口进口objects.MusicPlayer; objects.MusicPlayer;
 
-import substates.GameplayChangersSubstate;
-import substates.ResetScoreSubState;
+import   进口进口substates.GameplayChangersSubstate; substates.GameplayChangersSubstate;
+import   进口进口substates.ResetScoreSubState; substates.ResetScoreSubState;
 
-import flixel.math.FlxMath;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
+import   进口进口flixel.math.FlxMath; flixel.math   数学.FlxMath;
+import   进口进口flixel.tweens.FlxEase; flixel.tweens   吐温类.FlxEase;
+import   进口进口flixel.tweens.FlxTween; flixel.tweens   吐温类.FlxTween;
 
-class FreeplayState extends MusicBeatState
+classFreeplayState类扩展MusicBeatState FreeplayState    类extends MusicBeatState
 {
-	var songs:Array<SongMetadata> = [];
+	var songs   歌曲:Array<SongMetadata> = [];var songs   歌曲:Array<SongMetadata> = [];
 
-	var selector:FlxText;
-	private static var curSelected:Int = 0;
+	var selector   选择器:FlxText;
+	私有静态var curSelected:Int = 0   私人；private static   静态 var curSelected:Int = 0;
 	var lerpSelected:Float = 0;
 	var curDifficulty:Int = -1;
-	private static var lastDifficultyName:String = Difficulty.getDefault();
+	私有静态var lastDifficultyName:String = Difficulty.getDefault   私人()；private static   静态 var lastDifficultyName:String = Difficulty.getDefault();
 
 	var scoreBG:FlxSprite;
 	var scoreText:FlxText;
@@ -32,10 +32,10 @@ class FreeplayState extends MusicBeatState
 	var intendedScore:Int = 0;
 	var intendedRating:Float = 0;
 
-	private var grpSongs:FlxTypedGroup<Alphabet>;
-	private var curPlaying:Bool = false;
+	private   私人 var grpSongs:FlxTypedGroup<Alphabet>;private   私人 var grpSongs:FlxTypedGroup<Alphabet>;
+	private   私人 var curPlaying:Bool = false   假；private var curPlaying:Bool = false   假;
 
-	private var iconArray:Array<HealthIcon> = [];
+	private   私人 var iconArray:Array<HealthIcon> = []；private var iconArray:Array<HealthIcon> = [];
 
 	var bg:FlxSprite;
 	var intendedColor:Int;
@@ -48,63 +48,63 @@ class FreeplayState extends MusicBeatState
 	var bottomText:FlxText;
 	var bottomBG:FlxSprite;
 
-	var player:MusicPlayer;
+	   var球员:MusicPlayer;var player   球员:MusicPlayer;
 
-	override function create()
+	override 重写函数create（）function create()
 	{
-		persistentUpdate = true;
-		PlayState.isStoryMode = false;
-		WeekData.reloadWeekFiles(false);
+		persistentUpdate =    坚持=真理;true   真正的;
+		PlayState.PlayState。isStoryMode = false   假；isStoryMode = false   假;
+		WeekData.WeekData.reloadWeekFiles(假);reloadWeekFiles(false   假);
 
-		#if DISCORD_ALLOWED
-		DiscordClient.changePresence("In the Menus", null);
-		#end
+		   #如果DISCORD_ALLOWED#if DISCORD_ALLOWED
+		DiscordClient.DiscordClient.changePresence("In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus", null   零);changePresence("In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus"   "In the Menus", null   零);
+		   #结束#end
 
-		for (i in 0...WeekData.weeksList.length) {
-			if(weekIsLocked(WeekData.weeksList[i])) continue;
+		for   为 （i in   在 0.）长度){for   为 (i   我 in   在 0...WeekData.weeksList.length) {
+			如果(weekIsLocked (WeekData。weeksList[我]))继续;if   如果(weekIsLocked(WeekData.weeksList[i])) continue   继续;
 
-			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
-			var leSongs:Array<String> = [];
-			var leChars:Array<String> = [];
+			var leWeek:WeekData = WeekData.weeksLoaded.get   得到(WeekData.weeksList[i]);
+			var leSongs:Array<String> = [];var leSongs:Array<String> = [];
+			var leChars:Array<String> = [];var leChars:Array<String> = [];
 
-			for (j in 0...leWeek.songs.length)
+			for   为 (j在0…for (j in   在 0...leWeek.songs.length)
 			{
-				leSongs.push(leWeek.songs[j][0]);
-				leChars.push(leWeek.songs[j][1]);
+				leSongs.push   推   推(leWeek.songs   歌曲[j][0]);
+				leChars.push   推(leWeek.songs   歌曲[j][1]);
 			}
 
 			WeekData.setDirectoryFromWeek(leWeek);
-			for (song in leWeek.songs)
+			for   为 （leWeek.songs中的歌曲）for (song   首歌   首歌 in   在 leWeek.songs)
 			{
-				var colors:Array<Int> = song[2];
-				if(colors == null || colors.length < 3)
+				var colors   颜色:Array<Int> = song[2];var colors   颜色:Array<Int> = song[2];
+				如果(colors == null   零 ||的颜色。长度<； 3)if   如果(colors == null   零 || colors.length < 3)
 				{
-					colors = [146, 113, 253];
+					colors = [color = [146, 113, 253]；146, 113, 253];
 				}
-				addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+				addSong(song[addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]))；0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
 			}
 		}
 		Mods.loadTopMod();
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
+		bg = bg = new   新 FlxSprite().loadGraphic(Paths.image   图像('menuDesat'   menuDesat’))；new FlxSprite().loadGraphic(Paths.image   图像('menuDesat'   menuDesat’));
+		bg.antialiasing   抗锯齿 = ClientPrefs.data   数据.antialiasing   抗锯齿;
+		add(bg);   添加(bg);
 		bg.screenCenter();
 
-		grpSongs = new FlxTypedGroup<Alphabet>();
-		add(grpSongs);
+		grpSongs = grpSongs = new   新 FlxTypedGroup< ()；new FlxTypedGroup<Alphabet>();
+		add(grpSongs);   添加(grpSongs);
 
-		for (i in 0...songs.length)
+		For （i in   为 0…songs.length   长度）for (i in   在 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-			songText.targetY = i;
-			grpSongs.add(songText);
+			var songText   谁:Alphabet = new   新 Alphabet(90,320, songs[i]。songName, true   真正的);var songText   谁:Alphabet = new   新 Alphabet(90, 320, songs[i].songName, true   真正的);
+			songText.   songText。targetY = i；targetY = i;
+			grpSongs.   grpSongs   添加.add   添加(谁);add(songText);
 
-			songText.scaleX = Math.min(1, 980 / songText.width);
+			songText.scaleX = Math.min   最小值(1, 980 / songText.width   宽度);
 			songText.snapToPosition();
 
-			Mods.currentModDirectory = songs[i].folder;
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			Mods.currentModDirectory = songs[i].folder   文件夹;
+			var icon   图标:HealthIcon =新的HealthIcon(songs[i].songCharacter)；var icon:HealthIcon = new   新 HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 			
 			songText.visible = songText.active = songText.isMenuItem = false;
